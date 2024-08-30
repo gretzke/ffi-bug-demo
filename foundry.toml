@@ -21,7 +21,6 @@ max_test_rejects = 999999
 
 [fmt]
 line_length = 160
-number_underscore = "thousands"
 
 [rpc_endpoints]
 anvil = "http://127.0.0.1:8545"
