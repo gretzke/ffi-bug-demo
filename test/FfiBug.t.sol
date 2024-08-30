@@ -32,19 +32,33 @@ contract FfiBug is Test {
         ffi_js(3892671398392822131232);
     }
 
+    function test_ffi_works_echo() public {
+        uint256 value = 7631602904498167808;
+        ffi_echo(vm.toString(value));
+    }
+
+    function test_ffi_fails_echo() public {
+        uint256 value = 3892671398392822131232;
+        ffi_echo(vm.toString(value));
+    }
+
     function ffi_js(uint256 value) public {
-        ffi("node", "test/print.js", value);
+        ffi("node", "test/print.js", vm.toString(value));
     }
 
     function ffi_python(uint256 value) public {
-        ffi("python3", "test/print.py", value);
+        ffi("python3", "test/print.py", vm.toString(value));
     }
 
-    function ffi(string memory cmd, string memory file, uint256 value) public {
+    function ffi_echo(string memory value) public {
+        ffi("echo", "-n", value);
+    }
+
+    function ffi(string memory cmd, string memory file, string memory value) public {
         string[] memory cmds = new string[](3);
         cmds[0] = cmd;
         cmds[1] = file;
-        cmds[2] = vm.toString(value);
+        cmds[2] = value;
         bytes memory res = vm.ffi(cmds);
         console.logBytes(res);
         console.log("res", string(res));
